@@ -97,13 +97,13 @@ class _PhraseMatcher:
                 matches_wo_label = self._searcher.match(doc, pattern, **kwargs)
                 if matches_wo_label:
                     matches_w_label = [
-                        (label,) + match_wo_label for match_wo_label in matches_wo_label
+                        (label, str(pattern)) + match_wo_label for match_wo_label in matches_wo_label
                     ]
                     for match in matches_w_label:
                         matches.add(match)
         if matches:
-            sorted_matches = sorted(matches, key=lambda x: (x[1], -x[2] - x[1], -x[3]))
-            for i, (label, _start, _end, _ratio) in enumerate(sorted_matches):
+            sorted_matches = sorted(matches, key=lambda x: (x[2], -x[3] - x[2], -x[4]))
+            for i, (label, pattern, _start, _end, _ratio) in enumerate(sorted_matches):
                 on_match = self._callbacks.get(label)
                 if on_match:
                     on_match(self, doc, i, sorted_matches)
